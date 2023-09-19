@@ -13,7 +13,7 @@ This project is deployed using AWS CDK in TypeScript.
 
 ## Steps to run and test
 * Deploy the CDK code. Wait for the deploy to finish.  It will print out the S3 Bucket name and the test API Endpoint.
-* Upload a file to created S3 bucket from your local machine (you can use AWS Console as depicted here.  Alternatively, you can use AWS CLI)
+* Upload a file to the S3 bucket from your local machine (you can use AWS Console as depicted here.  Alternatively, you can use AWS CLI)
   * ![image](s3-upload.PNG "Upload a file to S3")
 * Go to AWS DataSync Console and Start the tasks.  Yes, this is manual.  Please see: 'AWS DataSync Considerations' section.   Wait for all the tasks to complete.
   * ![image](ds-task.PNG "Run the DataSync Tasks")
@@ -29,7 +29,7 @@ This project is deployed using AWS CDK in TypeScript.
 * Must use CDK L1 constructs
 * Can't deploy EFS and DataSync in one Stack.  There are issues with FileSystem gets in creating state causing deploy to fail. [See issue 16826](https://github.com/aws/aws-cdk/issues/16826#issuecomment-1708892070)
 * Minimum Task Execution Schedule is One hour.  So if you have files coming in more frequently, you will have to consider additional approach.
-* Task Preparation takes a long time for DataSync before it can run the sync jobs.  It will get stuck on `Launching` state.  This can be scary:
-  * [DataSync Task stuck](https://docs.aws.amazon.com/datasync/latest/userguide/troubleshooting-datasync-locations-tasks.html#task-stuck-starting)
+* Task Preparation takes a long time for DataSync before it can run the sync jobs.  It will get stuck on `Preparing` state.  This can be scary:
+  * [DataSync Task stuck on Preparing](https://docs.aws.amazon.com/datasync/latest/userguide/troubleshooting-datasync-locations-tasks.html#Preparing-status-too-long)
 * If you have multiple tasks that runs, you will get the dreaded message: `Duplicate scheduled task executions will not be queued.`
 
