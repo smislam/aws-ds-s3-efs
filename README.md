@@ -9,12 +9,14 @@ This project is deployed using AWS CDK in TypeScript.
 * Creates a S3 Bucket for source files
 * Creates an EFS for destination files
 * Creates multiple DataSync tasks to move files between S3 and EFS
-* Creates an additional testing Lambda that reads file list from the EFS volume and Exposes using API Gateway
+* Creates a testing Lambda that reads file list from the EFS volume and Exposes using API Gateway
 
 ## Steps to run and test
 * Deploy the CDK code. Wait for the deploy to finish.  It will print out the S3 Bucket name and the test API Endpoint.
 * Upload a file to created S3 bucket from your local machine (you can use AWS Console as depicted here.  Alternatively, you can use AWS CLI)
   * ![image](s3-upload.PNG "Upload a file to S3")
+* Go to AWS DataSync Console and Start the tasks.  Yes, this is manual.  Please see: 'AWS DataSync Considerations' section.   Wait for all the tasks to complete.
+  * ![image](ds-task.PNG "Run the DataSync Tasks")
 * Click on the API Gateway endpoint to view the file name from EFS.
   * ![image](efs-list.PNG "View a list of the files in EFS")
 
