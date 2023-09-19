@@ -36,7 +36,6 @@ export class AwsDsS3EfsStack extends cdk.Stack {
     dsS3.applyRemovalPolicy(cdk.RemovalPolicy.DESTROY);
   
     //We need :to create mount and add data sync task for each subnets with EFS
-    //Looks like mount targets have a dependency.  So lets create those first
     egressSubnets.subnets.map((v, i) => {
 
       const dsEfs = new CfnLocationEFS(this, `ds-efs-${i}`, {
@@ -85,7 +84,7 @@ export class AwsDsS3EfsStack extends cdk.Stack {
     });    
     destEFS.connections.allowDefaultPortFrom(tester_lambda);
 
-    // Saved by the bell: https://github.com/aws/aws-cdk/issues/18759
+    // Saved by the bell (Thank you): https://github.com/aws/aws-cdk/issues/18759
     destEFS.connections.securityGroups.forEach((fssg) => {
       fssg.node.findAll().forEach((child)=> {
         if (child instanceof CfnSecurityGroupIngress &&
