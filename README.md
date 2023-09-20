@@ -15,7 +15,8 @@ This project is deployed using AWS CDK in TypeScript.
 * Deploy the CDK code. Wait for the deploy to finish.  It will print out the S3 Bucket name and the test API Endpoint.
 * Upload a file to the S3 bucket from your local machine (you can use AWS Console as depicted here.  Alternatively, you can use AWS CLI)
   * ![image](s3-upload.PNG "Upload a file to S3")
-* Go to AWS DataSync Console and Start the tasks.  Yes, this is manual.  Please see: 'AWS DataSync Considerations' section.   Wait for all the tasks to complete.
+* Currently all tasks are scheduled to be run once at the top of each hour.  If you need to test this feature outside of the run schedule, you will need to run this manually.  Please see: 'AWS DataSync Considerations' section for details.
+  * Go to AWS DataSync Console and Start the tasks.  Wait for all the tasks to complete.
   * ![image](ds-task.PNG "Run the DataSync Tasks")
 * Click on the API Gateway endpoint to view the file name from EFS.
   * ![image](efs-list.PNG "View a list of the files in EFS")
@@ -28,8 +29,8 @@ This project is deployed using AWS CDK in TypeScript.
 ## AWS DataSync Considerations
 * Must use CDK L1 constructs
 * Can't deploy EFS and DataSync in one Stack.  There are issues with FileSystem gets in creating state causing deploy to fail. [See issue 16826](https://github.com/aws/aws-cdk/issues/16826#issuecomment-1708892070)
-* Minimum Task Execution Schedule is One hour.  So if you have files coming in more frequently, you will have to consider additional approach.
-* Task Preparation takes a long time for DataSync before it can run the sync jobs.  It will get stuck on `Preparing` state.  This can be scary:
+* Minimum Task Execution Schedule is One(1) hour.  So if you have files coming in more frequently, you will have to consider additional approach.
+* Task Preparation takes a long time for DataSync before it can run the sync jobs.  It will get stuck on `Preparing` state.  This can be scary if you aren't aware of it.
   * [DataSync Task stuck on Preparing](https://docs.aws.amazon.com/datasync/latest/userguide/troubleshooting-datasync-locations-tasks.html#Preparing-status-too-long)
-* If you have multiple tasks that runs, you will get the dreaded message: `Duplicate scheduled task executions will not be queued.`
+* Only a single instance of each DataSync task can be run at once.  If you have multiple tasks that runs, you will get the dreaded message: `Duplicate scheduled task executions will not be queued.`
 
